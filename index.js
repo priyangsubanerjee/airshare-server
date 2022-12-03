@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://airshare.vercel.app",
+    origin: "*",
     methods: "GET,PUT,POST,DELETE,OPTIONS".split(","),
     credentials: true,
   },
@@ -28,8 +28,40 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("user connected: " + socket.id);
 
+  socket.on("join-room", (data) => {
+    socket.join(data.room);
+    users.push(data);
+
+    let usersInRoom = users.filter((user) => user.room === data.room);
+
+    socket.emit("you-have-joined-room", {
+      message: `You have joined the room.`,
+      id: socket.id,
+      name: data.name,
+      room: data.room,
+      users: usersInRoom,
+    });
+
+    io.to(data.room).emit("users-in-room", {
+      message: `${data.id} has joined the room.`,
+      id: socket.id,
+      users: usersInRoom,
+    });
+  });
+
   socket.on("disconnect", () => {
-    console.log("user disconnected: " + socket.id);
+    const user = users.find((user) => user.id === socket.id);
+    if (user) {
+      const index = users.indexOf(user);
+      users.splice(index, 1);
+
+      const usersInRoom = users.filter((i) => user.room === i.room);
+
+      io.to(user.room).emit("users-in-room", {
+        message: `${user.id} has left the room.`,
+        users: usersInRoom,
+      });
+    }
   });
 });
 
