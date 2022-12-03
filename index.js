@@ -14,6 +14,7 @@ const io = require("socket.io")(server, {
 });
 
 let users = [];
+let files = [];
 
 const hostdir =
   process.env.NODE_ENV === "production"
