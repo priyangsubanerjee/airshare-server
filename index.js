@@ -16,11 +16,6 @@ const io = require("socket.io")(server, {
 let users = [];
 let files = [];
 
-const hostdir =
-  process.env.NODE_ENV === "production"
-    ? "https://airdropserver.herokuapp.com"
-    : "http://192.168.1.36:5589";
-
 app.use(cors());
 app.use(express.static(path.join(__dirname, "./public")));
 
