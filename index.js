@@ -25,7 +25,9 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "./public")));
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send(
+    "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo excepturi voluptatum, ex nisi illum unde animi omnis optio earum, possimus, aperiam repellat cupiditate autem! Nobis vitae laborum quo non consequatur."
+  );
 });
 
 io.on("connection", (socket) => {
