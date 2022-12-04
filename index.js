@@ -14,7 +14,6 @@ const io = require("socket.io")(server, {
 });
 
 let users = [];
-let files = [];
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "./public")));
