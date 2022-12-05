@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("notify", (data) => {
-      socket.to(data.to).emit("notify-alert", data);
+      socket.to(data.to.id).emit("notify-alert", data);
     });
 
     io.to(data.room).emit("users-in-room", {
