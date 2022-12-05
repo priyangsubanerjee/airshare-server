@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
       users: usersInRoom,
     });
 
+    socket.on("notify", (data) => {
+      socket.to(data.to).emit("notify-alert", data);
+    });
+
     io.to(data.room).emit("users-in-room", {
       message: `${data.id} has joined the room.`,
       id: socket.id,
