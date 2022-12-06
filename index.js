@@ -41,8 +41,11 @@ io.on("connection", (socket) => {
       users: usersInRoom,
     });
 
-    socket.on("notify", (data) => {
-      socket.to(data.to.id).emit("notify-alert", data);
+    socket.on("test-connection", (data) => {
+      data.to.map((client) => {
+        console.log(client);
+        socket.to(client.id).emit("test-connection-alert", data);
+      });
     });
 
     io.to(data.room).emit("users-in-room", {
