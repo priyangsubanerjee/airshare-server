@@ -43,8 +43,13 @@ io.on("connection", (socket) => {
 
     socket.on("test-connection", (data) => {
       data.to.map((client) => {
-        console.log(client);
         socket.to(client.id).emit("test-connection-alert", data);
+      });
+    });
+
+    socket.on("send-message-obj", (data) => {
+      data.to.map((client) => {
+        socket.to(client.id).emit("receive-message-obj", data);
       });
     });
 
