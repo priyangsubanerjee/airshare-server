@@ -16,7 +16,7 @@ const io = require("socket.io")(server, {
 let users = [];
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "./public")));
+app.use("/public", express.static(path.join(__dirname, "./public")));
 
 app.get("/", (req, res) => {
   res.send(
@@ -25,8 +25,6 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("user connected: " + socket.id);
-
   socket.on("join-room", (data) => {
     socket.join(data.room);
     users.push(data);
@@ -62,6 +60,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const user = users.find((user) => user.id === socket.id);
+
     if (user) {
       const index = users.indexOf(user);
       users.splice(index, 1);
